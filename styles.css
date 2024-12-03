@@ -1,0 +1,171 @@
+/* General */
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: #333; /* Color de texto para todo */
+}
+
+h1, h2 {
+    color: #333;
+}
+
+/* Barra de navegación */
+header {
+    background-color: #007BFF;
+    color: white;
+    padding: 10px 0;
+    margin-bottom: 20px;
+}
+
+header .container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header h1 {
+    font-size: 1.8rem;
+}
+
+nav ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+nav ul li {
+    margin-right: 20px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-size: 1.1rem;
+    transition: color 0.3s ease;
+}
+
+nav ul li a:hover {
+    color: #f1f1f1;
+}
+
+/* Estilo de las tarjetas de los autores (collage) */
+.autores-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Grid responsivo */
+    gap: 20px;
+    padding: 20px;
+    margin-top: 30px;
+}
+
+.autor-card {
+    background-color: #fff;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.autor-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+}
+
+.autor-card-content {
+    padding: 20px;
+    text-align: center;
+}
+
+.autor-card h3 {
+    margin: 0 0 10px;
+    color: #007BFF;
+    font-size: 1.2rem;
+}
+
+.autor-card p {
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/* Botones */
+.btn-nav {
+    background-color: #28a745; /* Verde */
+    color: #fff;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    margin-right: 15px;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.btn-nav:hover {
+    background-color: #218838; /* Verde más oscuro */
+    transform: scale(1.05); /* Efecto de aumento en hover */
+}
+
+.btn-nav:active {
+    background-color: #1e7e34; /* Verde al hacer clic */
+}
+
+/* Estilos para la sección de comentarios */
+.comentarios-section {
+    padding: 20px;
+    margin-top: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 10px;
+    text-align: left;
+}
+
+th {
+    background-color: #007BFF;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+    .container {
+        padding: 15px;
+    }
+
+    table, .btn {
+        width: 100%;
+        font-size: 0.9rem;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    nav ul li {
+        margin-bottom: 10px;
+    }
+}

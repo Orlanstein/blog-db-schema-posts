@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Últimos Comentarios</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Últimos Comentarios</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="btn-nav">Últimos Comentarios</a></li>
+                    <li><a href="autores.html" class="btn-nav">Lista de Autores</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="comentarios-section">
+            <button id="refrescarBtn" class="btn-nav">Refrescar Comentarios</button>
+            <!-- Tabla de comentarios -->
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID Comentario</th>
+                        <th>ID Post</th>
+                        <th>Autor</th>
+                        <th>Contenido</th>
+                        <th>Fecha</th>
+                    </tr>
+                </thead>
+                <tbody id="comentarios">
+                    <!-- Los datos se cargarán dinámicamente aquí -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script>
+        // URL de la API para obtener los últimos 3 comentarios
+        const API_URL = 'http://localhost:3000/comentarios';
+
+        // Función para cargar los comentarios
+        async function cargarComentarios() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                // Seleccionamos el cuerpo de la tabla
+                const tabla = document.getElementById('comentarios');
+                tabla.innerHTML = ''; // Limpiar contenido previo
+
+                // Agregar cada comentario como una fila
+                data.forEach(comentario => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${comentario.id_comentario}</td>
+                        <td>${comentario.id_post}</td>
+                        <td>${comentario.id_autor}</td>
+                        <td>${comentario.contenido}</td>
+                        <td>${comentario.fecha}</td>
+                    `;
+                    tabla.appendChild(fila);
+                });
+            } catch (error) {
+                console.error('Error al cargar los comentarios:', error);
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        window.onload = cargarComentarios;
+
+        // Refrescar los comentarios al hacer clic en el botón
+        document.getElementById('refrescarBtn').addEventListener('click', cargarComentarios);
+    </script>
+</body>
+</html>

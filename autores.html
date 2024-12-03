@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Autores</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace a tu archivo CSS -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Lista de Autores</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="btn-nav">Últimos Comentarios</a></li>
+                    <li><a href="autores.html" class="btn-nav">Lista de Autores</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section id="autores" class="autores-container">
+            <!-- Los datos de los autores se cargarán dinámicamente aquí -->
+        </section>
+    </div>
+
+    <script>
+        // URL de la API para obtener todos los autores
+        const API_URL = 'http://localhost:3000/autores';
+
+        // Función para cargar los autores
+        async function cargarAutores() {
+            try {
+                const response = await fetch(API_URL);
+                const data = await response.json();
+
+                // Seleccionamos el contenedor de los autores
+                const container = document.getElementById('autores');
+                container.innerHTML = ''; // Limpiar contenido previo
+
+                // Agregar cada autor como una tarjeta
+                data.forEach(autor => {
+                    const card = document.createElement('div');
+                    card.classList.add('autor-card');
+                    card.innerHTML = `
+                        <div class="autor-card-content">
+                            <h3>${autor.nombre}</h3>
+                            <p>${autor.correo}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error('Error al cargar los autores:', error);
+            }
+        }
+
+        // Llamar a la función al cargar la página
+        window.onload = cargarAutores;
+    </script>
+</body>
+</html>
