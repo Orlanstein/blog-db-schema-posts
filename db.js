@@ -2,10 +2,10 @@ const { Pool } = require('pg');
 
 // Configuración de la base de datos
 const pool = new Pool({
-  user: 'postgres',      // Cambia por tu usuario de PostgreSQL
-  host: 'localhost',       // Cambia si no estás usando localhost
-  database: 'paginadb',    // Nombre de tu base de datos
-  password: 'Orla05Salo08', // Contraseña de tu usuario
+  user: 'conexion_blog',      // Cambia por tu usuario de PostgreSQL
+  host: 'zombies-tec1.postgres.database.azure.com',       // Cambia si no estás usando localhost
+  database: 'blog',    // Nombre de tu base de datos
+  password: 'blog1234', // Contraseña de tu usuario
   port: 5432,              // Puerto por defecto de PostgreSQL
 });
 
