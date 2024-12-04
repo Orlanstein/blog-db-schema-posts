@@ -1,12 +1,16 @@
+require('dotenv').config({ path: 'variables.env' }); // Especifica el archivo de variables
 const { Pool } = require('pg');
 
-// Configuración de la base de datos
+// Configuración del pool con variables de entorno
 const pool = new Pool({
-  user: 'conexion_blog',      // Cambia por tu usuario de PostgreSQL
-  host: 'zombies-tec1.postgres.database.azure.com',       // Cambia si no estás usando localhost
-  database: 'blog',    // Nombre de tu base de datos
-  password: 'blog1234', // Contraseña de tu usuario
-  port: 5432,              // Puerto por defecto de PostgreSQL
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: parseInt(process.env.DB_PORT, 10), // Asegurar que sea un número
+  ssl: {
+    rejectUnauthorized: false, // Considera usar certificados válidos en producción
+  },
 });
 
 // Probar la conexión
@@ -14,7 +18,7 @@ pool.connect((err, client, release) => {
   if (err) {
     return console.error('Error conectando a la base de datos:', err.stack);
   }
-  console.log('Conexión exitosa a PostgreSQL');
+  console.log('Conexión exitosa a PostgreSQL en Azure');
   release();
 });
 
