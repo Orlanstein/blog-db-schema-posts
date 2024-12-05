@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuevo Comentario</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Nuevo Comentario</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="btn-nav">Últimos Comentarios</a></li>
+                    <li><a href="autores.html" class="btn-nav">Lista de Autores</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="comentarios-section">
+            <h2>Agregar un Nuevo Comentario</h2>
+            <form id="comentarioForm" method="POST" action="/comentarios">
+                <div class="form-group">
+                    <label for="comentarioEmail">Tu Correo Electrónico:</label>
+                    <input type="email" id="comentarioEmail" name="comentario_email" placeholder="ejemplo@dominio.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="comentario">Comentario:</label>
+                    <textarea id="comentario" name="comentario" placeholder="Escribe tu comentario..." rows="4" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="autorId">ID del Autor del Post:</label>
+                    <input type="number" id="autorId" name="autor_id" placeholder="ID del autor del post" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="postId">ID del Post:</label>
+                    <input type="number" id="postId" name="post_id" placeholder="ID del post" required>
+                </div>
+
+                <button type="submit" class="btn-nav">Enviar Comentario</button>
+            </form>
+        </section>
+    </div>
+
+    <script>
+        // Opcional: puedes agregar algo de JavaScript para manejar el formulario si es necesario
+        document.getElementById('comentarioForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Evita el envío tradicional
+
+            const formData = new FormData(this);
+
+            fetch('/comentarios', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert('Comentario enviado correctamente');
+                document.getElementById('comentarioForm').reset(); // Resetear el formulario
+            })
+            .catch(error => {
+                console.error('Error al enviar el comentario:', error);
+                alert('Hubo un error al enviar el comentario');
+            });
+        });
+    </script>
+</body>
+</html>

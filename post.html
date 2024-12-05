@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Post</title>
+    <link rel="stylesheet" href="styles.css"> <!-- Enlace a tu archivo CSS -->
+    <style>
+        /* Estilo global */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px 0;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 24px;
+        }
+
+        /* Estilo del contenido del post */
+        .post-content {
+            margin-bottom: 40px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .post-content h2 {
+            margin-top: 0;
+            color: #4CAF50;
+            font-size: 28px;
+        }
+
+        .post-content p {
+            margin: 10px 0;
+            line-height: 1.6;
+        }
+
+        .post-content small {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Estilo de los comentarios */
+        .comments-container {
+            margin-top: 40px;
+        }
+
+        .comments-container h3 {
+            font-size: 22px;
+            margin-bottom: 20px;
+        }
+
+        .comment-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .comment-card p {
+            margin: 5px 0;
+            line-height: 1.6;
+        }
+
+        .comment-card small {
+            color: #666;
+            font-size: 14px;
+        }
+
+        /* Estilo del formulario para añadir comentarios */
+        .add-comment-form {
+            margin-top: 40px;
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .add-comment-form h3 {
+            margin-top: 0;
+            color: #333;
+            font-size: 22px;
+        }
+
+        .add-comment-form textarea,
+        .add-comment-form input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .add-comment-form button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 16px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .add-comment-form button:hover {
+            background-color: #45a049;
+        }
+
+        /* Diseño responsivo */
+        @media (max-width: 768px) {
+            .post-content h2,
+            .add-comment-form h3 {
+                font-size: 24px;
+            }
+
+            .add-comment-form textarea,
+            .add-comment-form input {
+                font-size: 14px;
+            }
+
+            .add-comment-form button {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Detalles del Post</h1>
+        </div>
+    </header>
+
+    <div class="container">
+        <!-- Contenedor del post -->
+        <section id="post-details" class="post-content">
+            <!-- Detalles del post se cargarán dinámicamente -->
+        </section>
+
+        <!-- Contenedor de los comentarios -->
+        <section id="comments" class="comments-container">
+            <h3>Comentarios</h3>
+            <!-- Lista de comentarios se cargará dinámicamente -->
+        </section>
+
+        <!-- Formulario para añadir un nuevo comentario -->
+        <section id="add-comment" class="add-comment-form">
+            <h3>Añadir un Nuevo Comentario</h3>
+            <textarea id="new-comment-content" placeholder="Escribe tu comentario aquí..." rows="5"></textarea>
+            <input type="email" id="comment-email" placeholder="Tu correo electrónico" required>
+            <button onclick="addComment()">Enviar Comentario</button>
+        </section>
+    </div>
+
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        const postId = params.get('id');
+
+        if (!postId) {
+            alert("No se proporcionó un ID de post válido.");
+            window.location.href = "posts.html";
+        }
+
+        const API_URL = 'http://localhost:3000';
+
+        async function cargarPost() {
+            try {
+                const response = await fetch(`${API_URL}/posts/${postId}`);
+                if (!response.ok) throw new Error(`Error al obtener el post: ${response.statusText}`);
+                const post = await response.json();
+
+                const postDetails = document.getElementById('post-details');
+                postDetails.innerHTML = `
+                    <h2>${post.titulo}</h2>
+                    <p><strong>Autor:</strong> ${post.nombre_autor}</p>
+                    <p>${post.contenido}</p>
+                    <small><em>Publicado el: ${post.fecha}</em></small>
+                `;
+            } catch (error) {
+                console.error('Error al cargar el post:', error);
+            }
+        }
+
+        async function cargarComentarios() {
+            try {
+                const response = await fetch(`${API_URL}/posts/${postId}/comments`);
+                if (!response.ok) throw new Error(`Error al obtener comentarios: ${response.statusText}`);
+                const comments = await response.json();
+
+                const commentsContainer = document.getElementById('comments');
+                commentsContainer.innerHTML = ''; 
+
+                if (comments.length === 0) {
+                    commentsContainer.innerHTML = '<p>No hay comentarios para este post.</p>';
+                    return;
+                }
+
+                comments.forEach(comment => {
+                    const commentCard = document.createElement('div');
+                    commentCard.classList.add('comment-card');
+                    commentCard.innerHTML = `
+                        <p>${comment.contenido}</p>
+                        <small><em>Por: ${comment.email || "Anónimo"} el ${comment.fecha}</em></small>
+                    `;
+                    commentsContainer.appendChild(commentCard);
+                });
+            } catch (error) {
+                console.error('Error al cargar los comentarios:', error);
+            }
+        }
+
+        async function addComment() {
+            const content = document.getElementById('new-comment-content').value.trim();
+            const email = document.getElementById('comment-email').value.trim();
+        
+            if (!content || !email) {
+                alert('Por favor, completa todos los campos.');
+                return;
+            }
+        
+            try {
+                const response = await fetch(`${API_URL}/comentarios`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        comentario: content,
+                        post_id: parseInt(postId, 10), // El ID del post actual
+                        comentario_email: email
+                    })
+                });
+        
+                if (response.ok) {
+                    alert('Comentario añadido con éxito.');
+                    document.getElementById('new-comment-content').value = ''; // Limpiar el campo de texto
+                    document.getElementById('comment-email').value = ''; // Limpiar el campo de email
+                    cargarComentarios(); // Recargar la lista de comentarios
+                } else {
+                    const errorMsg = await response.text();
+                    console.error('Error al añadir el comentario:', errorMsg);
+                    alert('No se pudo añadir el comentario.');
+                }
+            } catch (error) {
+                console.error('Error al añadir el comentario:', error);
+                alert('Ocurrió un error al enviar el comentario. Inténtalo de nuevo.');
+            }
+        }
+        
+        window.onload = () => {
+            cargarPost();
+            cargarComentarios();
+        };
+    </script>
+</body>
+</html>
