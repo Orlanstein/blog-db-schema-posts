@@ -75,6 +75,28 @@ app.get('/posts', async (req, res) => {
   }
 });
 
+//Cargar comentarios de un post
+app.get('/posts/:id/comments', async (req, res) => {
+  const postId = req.params.id;
+
+  try {
+      const result = await pool.query(
+          `SELECT contenido, fecha, 
+                  (SELECT correo FROM public.autor WHERE id_autor = c.id_autor) AS email 
+           FROM public.comentario c
+           WHERE id_post = $1
+           ORDER BY fecha ASC`, 
+          [postId]
+      );
+
+      res.json(result.rows);
+  } catch (err) {
+      console.error('Error al obtener los comentarios:', err.message);
+      res.status(500).send('Error en el servidor.');
+  }
+});
+
+
 // Función para enviar correos utilizando Azure Communication Services
 async function sendEmail(subject, content, toEmail) {
   try {
@@ -141,7 +163,7 @@ app.post('/comentarios', async (req, res) => {
       <p><strong>Comentario:</strong> ${comentario}</p>
       <p><strong>Email del comentarista:</strong> ${comentario_email}</p>
       <p>Saludos,</p>
-      <p>Tu equipo de Blog</p>
+      <p>Tu equipo de Blog - ITSA - EquipoZombies</p>
     `;
     await sendEmail(subject, content, autor_email);
 

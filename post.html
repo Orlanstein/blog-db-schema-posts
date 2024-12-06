@@ -150,6 +150,13 @@
     <header>
         <div class="container">
             <h1>Detalles del Post</h1>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="btn-nav">Últimos Comentarios</a></li>
+                    <li><a href="autores.html" class="btn-nav">Lista de Autores</a></li>
+                    <li><a href="posts.html" class="btn-nav">Posts</a></li>
+                </ul>
+            </nav>
         </div>
     </header>
 
@@ -159,9 +166,12 @@
             <!-- Detalles del post se cargarán dinámicamente -->
         </section>
 
+        <section>
+            <h1>Comentarios del post</h1>
+        </section>
         <!-- Contenedor de los comentarios -->
         <section id="comments" class="comments-container">
-            <h3>Comentarios</h3>
+            <h3>comentarios, si se muestra esto no hay comentarios</h3>
             <!-- Lista de comentarios se cargará dinámicamente -->
         </section>
 
@@ -208,15 +218,15 @@
                 const response = await fetch(`${API_URL}/posts/${postId}/comments`);
                 if (!response.ok) throw new Error(`Error al obtener comentarios: ${response.statusText}`);
                 const comments = await response.json();
-
+        
                 const commentsContainer = document.getElementById('comments');
-                commentsContainer.innerHTML = ''; 
-
+                commentsContainer.innerHTML = ''; // Limpiar comentarios previos
+        
                 if (comments.length === 0) {
                     commentsContainer.innerHTML = '<p>No hay comentarios para este post.</p>';
                     return;
                 }
-
+        
                 comments.forEach(comment => {
                     const commentCard = document.createElement('div');
                     commentCard.classList.add('comment-card');
@@ -230,7 +240,7 @@
                 console.error('Error al cargar los comentarios:', error);
             }
         }
-
+                
         async function addComment() {
             const content = document.getElementById('new-comment-content').value.trim();
             const email = document.getElementById('comment-email').value.trim();
